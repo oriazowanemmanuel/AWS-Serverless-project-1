@@ -1,0 +1,6 @@
+# Ignore zipped files
+index.html.zip
+
+#Ignore .DS_Store
+.DS_Store
+
