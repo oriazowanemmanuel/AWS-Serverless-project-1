@@ -7,59 +7,71 @@
     <title>Post Detail Form</title>
 </head>
 <body>
-    <h2>Post a Detail</h2>
+    <h2>Post Your Details</h2>
+    <!-- Form for submitting user details and CV -->
     <form id="detailForm" enctype="multipart/form-data">
+        <!-- Input for the user's name -->
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required><br><br>
 
+        <!-- Input for the user's surname -->
         <label for="surname">Surname:</label>
         <input type="text" id="surname" name="surname" required><br><br>
 
+        <!-- Input for the user's email address with validation -->
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
 
-        <label for="detail_id">Detail ID:</label>
-        <input type="text" id="detail_id" name="detail_id" required><br><br>
-
-        <label for="detail_data">Detail Data:</label>
-        <textarea id="detail_data" name="detail_data" required></textarea><br><br>
-
+        <!-- Input for uploading CV (supports PDF, DOC, DOCX, JPEG) -->
         <label for="cv">Upload CV (PDF, DOC, JPEG):</label>
-        <input type="file" id="cv" name="cv" accept=".pdf,.doc,.jpeg,.jpg" required><br><br>
+        <input type="file" id="cv" name="cv" accept=".pdf, .doc, .docx, .jpeg, .jpg" required><br><br>
 
+        <!-- Submit button for the form -->
         <button type="submit">Submit</button>
     </form>
 
     <script>
+        // Event listener for form submission
         document.getElementById('detailForm').addEventListener('submit', async function(event) {
+            // Prevent the default form submission behavior
             event.preventDefault();
 
-            const formData = new FormData(this);
-            const email = document.getElementById('email').value;
-
-            // Email validation
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
+            // Create FormData object from the form
+            const form = document.getElementById('detailForm');
+            const formData = new FormData(form);
+            
+            // Validate the email address
+            const email = formData.get('email');
+            if (!validateEmail(email)) {
                 alert('Please enter a valid email address.');
                 return;
             }
 
             try {
+                // Send form data to the API endpoint
                 const response = await fetch('https://your-api-id.execute-api.region.amazonaws.com/dev/postDetail', {
                     method: 'POST',
-                    body: formData
+                    body: formData // Send FormData directly for multipart handling
                 });
 
+                // Parse the JSON response from the server
                 const data = await response.json();
                 if (response.ok) {
-                    alert('Detail successfully posted!');
+                    alert('Details successfully posted!');
                 } else {
                     alert('Error: ' + data.error);
                 }
             } catch (error) {
+                // Handle network or request errors
                 alert('Request failed: ' + error);
             }
         });
+
+        // Function to validate email format using regex
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple regex for basic email validation
+            return re.test(email);
+        }
     </script>
 </body>
 </html>
