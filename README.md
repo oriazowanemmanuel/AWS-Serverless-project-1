@@ -12,3 +12,9 @@ DynamoDB— TO store NoSQL data from the app
 
 
 We got them to work with each other and build out each of the services, resulting in a fully-functional math web application.
+
+
+Lambda Test
+{
+  "body": "name=John&surname=Doe&email=johndoe%40example.com&cv=VGhpcyBpcyBhIHNhbXBsZSBmaWxlIGNvbnRlbnQ="
+}
